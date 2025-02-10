@@ -16,4 +16,11 @@ function dividir(a, b) {
     return a / b;
 }
 // Hacer las funciones accesibles en el navegador
-module.exports = (suma, resta, multiplicar, dividir);
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { suma, resta, multiplicar, dividir };
+}
+
+// Exportación para el navegador
+if (typeof window !== 'undefined') {
+    window.calculadora = { suma, resta, multiplicar, dividir };
+}
