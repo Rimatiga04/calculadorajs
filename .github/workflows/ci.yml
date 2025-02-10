@@ -1,9 +1,6 @@
-name: CI/CD con GitHub Pages
+name: Integración Continua
 
-on:
-  push:
-    branches:
-      - main
+on: [push, pull_request]
 
 jobs:
   test:
@@ -19,27 +16,13 @@ jobs:
           node-version: 18
 
       - name: Instalar dependencias
-        run: npm ci
+        run: npm install
+
+      - name: Instalar Jest globalmente
+        run: npm install -g jest 
+
+      - name: Verificar instalación de Jest
+        run: npx jest --version
 
       - name: Ejecutar pruebas
         run: npm test
-
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Clonar el repositorio
-        uses: actions/checkout@v3
-
-      - name: Crear la carpeta de despliegue
-        run: |
-          mkdir -p public
-          cp index.html public/
-          cp calculadora.js public/
-
-      - name: Desplegar en GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          branch: gh-pages
-          folder: public
