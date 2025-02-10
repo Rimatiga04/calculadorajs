@@ -1,43 +1,45 @@
 name: CI/CD con GitHub Pages
+
 on:
- push:
-  branches:
-   - main
-   
+  push:
+    branches:
+      - main
+
 jobs:
- test:
-  runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-latest
 
-  steps:
-  - name: Clonar el repositorio
-    uses: actions/checkout@v3
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v3
 
-  - name: Configurar Node.js
-    uses: actions/setup-node@v3
-    with:
-     node-version: 18
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
-  - name: Instalar dependencias
-    run: npm ci
+      - name: Instalar dependencias
+        run: npm ci
 
-  - name: Ejecutar pruebas
-    run: npm test
+      - name: Ejecutar pruebas
+        run: npm test
 
- deploy:
-  needs: test
-  runs-on: ubuntu-latest
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
 
-  steps:
-   - name: Clonar el repositorio
-     uses: actions/checkout@v3
-   - name: Crear la carpeta de despliegue
-     run: |
-      mkdir public
-      cp index.html public/
-      cp calculadora.js public/
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v3
 
-   - name: Desplegar en GitHub Pages
-     uses: JamesIves/github-pages-deploy-action@v4
-     with:
-      branch: gh-pages
-      folder: public
+      - name: Crear la carpeta de despliegue
+        run: |
+          mkdir -p public
+          cp index.html public/
+          cp calculadora.js public/
+
+      - name: Desplegar en GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: public
